@@ -78,6 +78,10 @@ Verdict: H1 *not trusted*; both parts of the rule discard discoveries. The Direc
 
 These are **computational candidates**, not discoveries. Skeptic caveats: several are alkali compounds that are likely air- and moisture-sensitive (thermodynamic stability ≠ ambient stability), Yb is supply-critical, and the filter that found them excludes 39% of all hits. A single live run; the benchmark above is the measured result.
 
+**Scientist's ruling (human approval, recorded as a decision).** The Skeptic flagged Yb as supply-critical and could not verify the campaign's pool size. The scientist ruled: all 13 hits stand, because the hit definition was fixed before the campaign and is not changed after seeing results; report *13 hits (12 excluding supply-critical elements)*; add supply risk as a second-stage screen. The scientist also authorized a confirmation campaign.
+
+**Confirmation.** The agents' confirmation campaign could not start (the Databricks Free Edition session limit was reached). `scripts/reproduce_round4.py` replays the same selection offline instead: the pool is 275 candidates (filter applied), batch 1 is identical to the live run, batch 2 overlaps 9 of 10, and it finds 14 hits in 20 calculations (live: 13). This confirms reproducibility, not an independent sample: selection is deterministic.
+
 ## The discovery loop
 
 ```
