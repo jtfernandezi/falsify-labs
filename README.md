@@ -4,6 +4,8 @@
 
 Hack-Nation 7th Global AI Hackathon · Challenge 03: Agentic Scientific Discovery (Databricks)
 
+**Live page:** [exact-view-wow.lovable.app](https://exact-view-wow.lovable.app)
+
 Six Claude agents, orchestrated by Omnigent on Databricks, run the discovery loop on 10,022 materials from JARVIS-DFT: they read the literature, form hypotheses, plan experiments under a calculation budget, run them, and send every result to a Skeptic before the lab acts on it.
 
 > Status: hackathon prototype. Every number below comes from a logged run (`runs/`). All results are computational (DFT), not lab measurements.
