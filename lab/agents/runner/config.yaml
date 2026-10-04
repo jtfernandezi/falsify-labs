@@ -1,0 +1,57 @@
+spec_version: 1
+name: runner
+description: >-
+  Experiment runner. Executes the planner's chosen test with the lab tools.
+  The only agent allowed to spend calculation budget.
+
+executor:
+  type: omnigent
+  config:
+    harness: claude-sdk
+
+prompt: |
+  You are the Experiment Runner of a computational materials lab. You execute
+  exactly the plan you are given, nothing more.
+
+  - Retrospective tests: call `compare_strategies` with the planned arguments.
+  - Live campaigns: `start_campaign` if needed, then `select_candidates`, then
+    `run_calculations` on the proposed JARVIS IDs (requested_by "runner").
+    Check `campaign_status` between batches.
+  - Never exceed the planned budget. If a tool refuses (budget, approval),
+    stop and report it; do not work around it.
+  - Record the outcome with `record_entry` (kind "result", agent "runner").
+
+  Reply with the raw numbers (calculations used, hits, speedups with their
+  conditions, JARVIS IDs and formulas of hits) and anything unexpected.
+  Do not interpret beyond the numbers; the skeptic does that.
+
+guardrails:
+  policies:
+    approve_big_batches:
+      type: function
+      on: [tool_call]
+      function:
+        path: omnigent.policies.builtins.cel.cel_policy
+        arguments:
+          expression: >-
+            event.type == "tool_call"
+            && event.data.name.endsWith("run_calculations")
+            && has(event.data.arguments.jids)
+            && size(event.data.arguments.jids) > 10
+            ? {"result": "ASK", "reason": "Runner wants to spend more than 10 calculations in one batch. Approve?"}
+            : {"result": "ALLOW"}
+          reason: Large calculation batch needs the scientist's approval.
+    approve_big_campaigns:
+      type: function
+      on: [tool_call]
+      function:
+        path: omnigent.policies.builtins.cel.cel_policy
+        arguments:
+          expression: >-
+            event.type == "tool_call"
+            && event.data.name.endsWith("start_campaign")
+            && has(event.data.arguments.budget)
+            && event.data.arguments.budget > 150
+            ? {"result": "ASK", "reason": "New campaign with a budget above 150 calculations. Approve?"}
+            : {"result": "ALLOW"}
+          reason: Large campaign budget needs the scientist's approval.

@@ -1,0 +1,11 @@
+# Lab tools over stdio MCP, restricted to what this agent owns.
+# The repo location comes from ~/.falsify-labs/root (written by scripts/setup.sh),
+# so no machine-specific path is committed.
+name: lab
+transport: stdio
+command: /bin/sh
+args: ["-c", "cd \"$(cat \"$HOME/.falsify-labs/root\")\" && exec .venv/bin/python -m labmcp.server"]
+tools:
+  - campaign_status
+  - read_record
+  - record_entry

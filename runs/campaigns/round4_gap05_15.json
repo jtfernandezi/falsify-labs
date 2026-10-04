@@ -1,0 +1,64 @@
+{
+ "name": "round4_gap05_15",
+ "budget": 35,
+ "min_slme": 30.0,
+ "started": "2026-10-03T18:46:17",
+ "measured": [
+  "JVASP-3504",
+  "JVASP-4050",
+  "JVASP-3141",
+  "JVASP-107598",
+  "JVASP-36238",
+  "JVASP-138749",
+  "JVASP-8126",
+  "JVASP-136196",
+  "JVASP-2547",
+  "JVASP-3339",
+  "JVASP-36382",
+  "JVASP-32759",
+  "JVASP-29359",
+  "JVASP-8765",
+  "JVASP-8170",
+  "JVASP-104498",
+  "JVASP-36395",
+  "JVASP-2166",
+  "JVASP-149919",
+  "JVASP-35067"
+ ],
+ "batches": [
+  {
+   "time": "2026-10-03T18:46:30",
+   "requested_by": "runner",
+   "jids": [
+    "JVASP-3504",
+    "JVASP-4050",
+    "JVASP-3141",
+    "JVASP-107598",
+    "JVASP-36238",
+    "JVASP-138749",
+    "JVASP-8126",
+    "JVASP-136196",
+    "JVASP-2547",
+    "JVASP-3339"
+   ],
+   "hits": 7
+  },
+  {
+   "time": "2026-10-03T18:46:49",
+   "requested_by": "runner",
+   "jids": [
+    "JVASP-36382",
+    "JVASP-32759",
+    "JVASP-29359",
+    "JVASP-8765",
+    "JVASP-8170",
+    "JVASP-104498",
+    "JVASP-36395",
+    "JVASP-2166",
+    "JVASP-149919",
+    "JVASP-35067"
+   ],
+   "hits": 6
+  }
+ ]
+}

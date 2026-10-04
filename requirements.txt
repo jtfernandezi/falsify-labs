@@ -1,0 +1,7 @@
+# Lab environment (.venv): the MCP tool server and data build.
+jarvis-tools==2026.6.12
+mcp==1.30.0
+numpy==2.5.3
+pandas==3.0.6
+requests==2.34.2
+scikit-learn==1.9.1
