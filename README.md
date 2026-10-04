@@ -119,15 +119,18 @@ Each agent sees only its own tools (per-agent MCP allow-lists in `lab/**/tools/m
 ## Architecture
 
 ```
-Databricks workspace ── Omnigent (managed) ── Claude (claude-sonnet-4-6, served by Databricks)
+Databricks workspace ── Omnigent (managed): sessions, sub-agent hand-offs, policies, web UI
         │
         └── host: the scientist's machine (omnigent host)
+                ├── agents: claude-sdk harness (Claude Code CLI, the scientist's Claude subscription)
                 └── stdio MCP server  labmcp/server.py   (11 tools)
                         └── engine    labmcp/engine.py   (strategies, campaigns, benchmarks)
                                 └── data/pool.csv        (JARVIS-DFT, built by scripts/build_features.py)
 ```
 
-Hosted Omnigent rejects uploaded Python tool files, so the lab's tools run as an MCP server on the host. Agents are YAML specs in `lab/`.
+Omnigent's managed server on Databricks orchestrates the run; each agent's model calls go through the `claude-sdk` harness on the host, authenticated with the scientist's Claude subscription. Hosted Omnigent rejects uploaded Python tool files, so the lab's tools run as an MCP server on the host. Agents are YAML specs in `lab/`.
+
+The Omnigent session transcripts (Director, Literature, Hypothesis, Planner, Runner, Skeptic) are exported to `runs/sessions/` with `omnigent session export`.
 
 ## Run it
 
