@@ -8,6 +8,18 @@ Hack-Nation 7th Global AI Hackathon · Challenge 03: Agentic Scientific Discover
 
 Six Claude agents, orchestrated by Omnigent on Databricks, run the discovery loop on 10,022 materials from JARVIS-DFT: they read the literature, form hypotheses, plan experiments under a calculation budget, run them, and send every result to a Skeptic before the lab acts on it.
 
+## Submission checklist
+
+| The brief asks for | Where it is |
+|---|---|
+| Repository | this repo |
+| Agent specifications and policies | `lab/config.yaml` (Director) and `lab/agents/*/config.yaml`; policies under `guardrails:`; per-agent tool allow-lists in `lab/**/tools/mcp/lab.yaml` |
+| Two-minute demo | [`docs/demo.mp4`](docs/demo.mp4) |
+| Cited evidence | `runs/record.jsonl` (DOIs from OpenAlex, JARVIS IDs), [Data and evidence](#data-and-evidence) |
+| Experiment code and results | `labmcp/` (tools and engine), `scripts/`, `runs/` (research record, campaigns, 16 Omnigent session transcripts) |
+| Measured improvement | [Measured improvement](#measured-improvement): 3.0× with nothing discarded |
+| Next experiment | [Next experiment](#next-experiment) |
+
 > Status: hackathon prototype. Every number below comes from a logged run (`runs/`). All results are computational (DFT), not lab measurements.
 
 ---
@@ -82,7 +94,7 @@ These are **computational candidates**, not discoveries. Skeptic caveats: severa
 
 **Scientist's ruling (human approval, recorded as a decision).** The Skeptic flagged Yb as supply-critical and could not verify the campaign's pool size. The scientist ruled: all 13 hits stand, because the hit definition was fixed before the campaign and is not changed after seeing results; report *13 hits (12 excluding supply-critical elements)*; add supply risk as a second-stage screen. The scientist also authorized a confirmation campaign.
 
-**Confirmation.** The agents' confirmation campaign could not start (the Databricks Free Edition session limit was reached). `scripts/reproduce_round4.py` replays the same selection offline instead: the pool is 275 candidates (filter applied), batch 1 is identical to the live run, batch 2 overlaps 9 of 10, and it finds 14 hits in 20 calculations (live: 13). This confirms reproducibility, not an independent sample: selection is deterministic.
+**Confirmation.** The agents' confirmation campaign could not start (the Claude subscription's usage limit was reached mid-run). `scripts/reproduce_round4.py` replays the same selection offline instead: the pool is 275 candidates (filter applied), batch 1 is identical to the live run, batch 2 overlaps 9 of 10, and it finds 14 hits in 20 calculations (live: 13). This confirms reproducibility, not an independent sample: selection is deterministic.
 
 ## The discovery loop
 
@@ -107,7 +119,7 @@ Each agent sees only its own tools (per-agent MCP allow-lists in `lab/**/tools/m
 
 | Control | How it is enforced |
 |---|---|
-| Scientist approves big spends | Omnigent CEL policies on the Runner: **ASK** before a batch of more than 10 calculations or a campaign budget above 150 (`lab/agents/runner/config.yaml`) |
+| Scientist approves big spends | Omnigent CEL policies on the Runner: **ASK** before a batch of more than 10 calculations or a campaign budget above 150 (`lab/agents/runner/config.yaml`); the Director asks before any spend above 20 calculations. In the run, the scientist approved the live campaign ("Yes", 18:45) and issued a written ruling on the hits (`runs/sessions/2409047324160816-director-rounds2-4.jsonl`) |
 | Hard budget | `run_calculations` refuses requests beyond the campaign budget |
 | Runaway agents | `max_tool_calls_per_session` on the Director |
 | No silent misconfiguration | Tools reject arguments they do not declare (added after a live run where unsupported settings were silently ignored) |
